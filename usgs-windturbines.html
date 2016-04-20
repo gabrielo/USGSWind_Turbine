@@ -36,7 +36,7 @@
       var canvasLayer;
       var gl;
 
-      var coralBleaching = {
+      var usgsWindturbines = {
       	url: "usgs-windturbines.bin"
       };
 
@@ -53,10 +53,10 @@
       	gl = canvasLayer.canvas.getContext('experimental-webgl');
       	gl.enable(gl.BLEND);
         gl.blendFunc( gl.SRC_ALPHA, gl.ONE );
-      	coralBleaching.glb = new Glb(gl);
-    	  coralBleaching.program = coralBleaching.glb.programFromSources(document.getElementById('vertex-shader').text,
+      	usgsWindturbines.glb = new Glb(gl);
+    	  usgsWindturbines.program = usgsWindturbines.glb.programFromSources(document.getElementById('vertex-shader').text,
     		document.getElementById('fragment-shader').text);
-    	  load(coralBleaching);
+    	  load(usgsWindturbines);
       }
 
       document.addEventListener('DOMContentLoaded', init, false);
@@ -122,7 +122,7 @@
       }
 
       function update() {
-        if (coralBleaching.ready) {
+        if (usgsWindturbines.ready) {
           gl.clear(gl.COLOR_BUFFER_BIT);
           var mapProjection = map.getProjection();
           mapMatrix.set(pixelsToWebGLMatrix);
@@ -155,25 +155,25 @@
       function draw(transform) {
         pointSize = countryPointSizePixels * Math.pow(blockPointSizePixels / countryPointSizePixels, (map.zoom - 1) / (21 - 1));
 
-        gl.useProgram(coralBleaching.program);
+        gl.useProgram(usgsWindturbines.program);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, coralBleaching.arrayBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, coralBleaching.data, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, usgsWindturbines.arrayBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, usgsWindturbines.data, gl.STATIC_DRAW);
 
-        var attributeLoc = gl.getAttribLocation(coralBleaching.program, 'worldCoord');
+        var attributeLoc = gl.getAttribLocation(usgsWindturbines.program, 'worldCoord');
         gl.enableVertexAttribArray(attributeLoc);
         gl.vertexAttribPointer(attributeLoc, 2, gl.FLOAT, false, 12, 0);
 
-        var sizeLoc = gl.getUniformLocation(coralBleaching.program, 'uSize');
+        var sizeLoc = gl.getUniformLocation(usgsWindturbines.program, 'uSize');
         gl.uniform1f(sizeLoc, pointSize);
 
-        var matrixLoc = gl.getUniformLocation(coralBleaching.program, 'mapMatrix');
+        var matrixLoc = gl.getUniformLocation(usgsWindturbines.program, 'mapMatrix');
         gl.uniformMatrix4fv(matrixLoc, false, transform);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, coralBleaching.arrayBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, coralBleaching.data, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, usgsWindturbines.arrayBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, usgsWindturbines.data, gl.STATIC_DRAW);
 
-        gl.drawArrays(gl.POINTS, 0, coralBleaching.pointCount);
+        gl.drawArrays(gl.POINTS, 0, usgsWindturbines.pointCount);
 
       }
   	</script>
